@@ -3,11 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="./output.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./output.css" />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <title>Mausam_Ka_Haal</title>
   </head>
   <body>
-    <h1 class="text-3xl font-bold underline text-red-900">Hello world!</h1>
+    <header>
+      <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+            <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+              <ion-icon
+                onclick="menuToggle(this)"
+                class="text-2xl cursor-pointer relative ml-2 inline-flex items-center justify-center text-white"
+                name="menu-outline"
+              ></ion-icon>
+            </div>
+            <div
+              class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start"
+            >
+              <div class="">
+                <img class="h-auto w-30" src="./Preview.png" alt="Companlogo" />
+              </div>
+              <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-4">
+                  <input
+                    href="#"
+                    class="rounded-md bg-gray-900 px-3 py-2 mt-1 text-sm font-medium text-white"
+                    aria-current="page"
+                    placeholder="Enter your location"
+                  />
+                  <button
+                    class="rounded-md border-solid border-2 border-gray-700 px-3 py-2 mt-1 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+            >
+              <!-- Profile dropdown -->
+              <div class="hidden sm:ml-6 sm:block">
+                <div>
+                  <button
+                    type="button"
+                    class="flex items-center rounded-md px-3 py-2 border-solid border-2 border-gray-700 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <ion-icon
+                      class="size-5 mr-1"
+                      name="location-outline"
+                    ></ion-icon>
+                    Current Location
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div class="md:hidden hidden" id="mobile-menu">
+          <div class="space-y-1 px-2 pb-3 pt-2">
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+            <input
+              href="#"
+              class="inline-block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
+              aria-current="page"
+              placeholder="Enter your location"
+            />
+
+            <button
+              href="#"
+              class="inline-block border-solid border-2 border-gray-700 rounded-md px-3 py-1 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              search
+            </button>
+          </div>
+          <div class="space-y-1 px-2 pb-3 pt-2">
+            <button
+              href="#"
+              class="inline-block border-solid border-2 border-gray-700 -mt-9 rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              <ion-icon
+                class="size-5 relative top-1 mr-1"
+                name="location-outline"
+              ></ion-icon>
+              Current Location
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
     <script src="script.js"></script>
   </body>
 </html>
+<!-- df77161e8b524dcea26181828240510 -->
