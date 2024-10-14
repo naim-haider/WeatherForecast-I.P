@@ -1,12 +1,7 @@
-async function api() {
-  const response = await fetch(
-    "https://api.weatherapi.com/v1/forecast.json?key=df77161e8b524dcea26181828240510&q=kolkata&days=5"
-  );
-  const result = await response.json();
-  console.log(result);
-}
-
-api();
+// ---search details--- //
+const searchBtn = document.querySelectorAll(".searchBtn");
+const currentBtn = document.querySelectorAll(".currentBtn");
+const citySearched = document.querySelectorAll(".inputField");
 
 const mobileMenu = document.getElementById("mobile-menu");
 const menuIcon = document.getElementById("menuIcon");

@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./output.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
@@ -36,12 +43,12 @@
                 <div class="flex space-x-4">
                   <input
                     href="#"
-                    class="rounded-md bg-gray-900 px-3 py-2 mt-1 text-sm font-medium text-white"
+                    class="inputField rounded-md bg-gray-900 px-3 py-2 mt-1 text-sm font-medium text-white"
                     aria-current="page"
                     placeholder="Enter your location"
                   />
                   <button
-                    class="rounded-md border-solid border-2 border-gray-700 px-3 py-2 mt-1 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                    class="searchBtn rounded-md border-solid border-2 border-gray-700 px-3 py-2 mt-1 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     Search
                   </button>
@@ -56,7 +63,7 @@
                 <div>
                   <button
                     type="button"
-                    class="flex items-center rounded-md px-3 py-2 border-solid border-2 border-gray-700 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                    class="currentBtn flex items-center rounded-md px-3 py-2 border-solid border-2 border-gray-700 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                     id="user-menu-button"
                     aria-expanded="false"
                     aria-haspopup="true"
@@ -79,14 +86,14 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <input
               href="#"
-              class="inline-block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
+              class="inputField inline-block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
               aria-current="page"
               placeholder="Enter your location"
             />
 
             <button
               href="#"
-              class="inline-block border-solid border-2 border-gray-700 rounded-md px-3 py-1 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              class="searchBtn inline-block border-solid border-2 border-gray-700 rounded-md px-3 py-1 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               search
             </button>
@@ -94,7 +101,7 @@
           <div class="space-y-1 px-2 pb-3 pt-2">
             <button
               href="#"
-              class="inline-block border-solid border-2 border-gray-700 -mt-9 rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+              class="currentBtn inline-block border-solid border-2 border-gray-700 -mt-9 rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               <ion-icon
                 class="size-5 relative top-1 mr-1"
@@ -106,6 +113,136 @@
         </div>
       </nav>
     </header>
+
+    <main
+      id="background"
+      class="bg-[url('./images/clear.gif')] bg-center bg-cover bg-no-repeat min-h-screen w-full flex flex-col gap-1 justify-start p-12"
+    >
+      <!-- main card -->
+      <div class="grid grid-cols-1 xl:grid-cols-6">
+        <div
+          class="p-4 flex flex-col text-center xl:rounded-l-lg col-span-2 rounded-t-lg shadow-2xl cursor-pointer bg-white/20 backdrop-blur-sm"
+          id="currentData"
+        >
+          <!-- date starts here -->
+          <div
+            class="block w-1/4 justify-around items-center bg-inherit p-1 gap-2"
+          >
+            <div
+              class="text-white text-justify text-sm h-5 w-40 font-serif font-bold rounded-lg p-1"
+              id="date"
+            ></div>
+            <div
+              class="text-white text-justify text-sm h-5 w-40 font-serif font-bold rounded-lg p-1"
+              id="time"
+            ></div>
+          </div>
+          <!-- date ends here -->
+
+          <!-- current weather details starts here -->
+          <!-- weather Icon -->
+          <div class="flex justify-center items-stretch">
+            <img
+              id="currMainIcon"
+              class="md:w-40 w-20 h-4w-25"
+              src="./images/sunny-icon.png"
+              alt=""
+            />
+          </div>
+          <!-- weather -->
+          <div class="flex flex-col gap-3">
+            <p id="weather" class="font-semibold mb-5 text-3xl text-white">
+              Sunny
+            </p>
+          </div>
+          <!-- tempreture -->
+          <div class="">
+            <p class="font-semibold text-4xl text-white">
+              <span id="cur_temperature">24</span>°C
+            </p>
+            <p class="font-semibold text-xl text-white">Now</p>
+          </div>
+          <!-- city and country name -->
+          <div class="flex flex-col mt-6 mb-4">
+            <p class="font-semibold text-2xl text-white">
+              <span id="city">Howrah</span>, <span id="country">IN</span>
+            </p>
+          </div>
+          <!-- current details -->
+          <div class="flex flex-col mt-4 justify-between gap-5">
+            <!-- for temperature -->
+            <div
+              class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
+            >
+              <ion-icon
+                class="w-8 h-8 text-white"
+                name="thermometer"
+              ></ion-icon>
+              <div class="">
+                <p class="text-sm text-white text-right">Temperature</p>
+              </div>
+              <div class="">
+                <p class="font-bold text-sm text-right text-[#ff5a00]">
+                  <span id="temperature">24</span>°C
+                </p>
+              </div>
+            </div>
+            <!-- for wind speed -->
+            <div
+              class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
+            >
+              <ion-icon
+                class="w-8 h-8 text-white"
+                name="speedometer"
+              ></ion-icon>
+              <div class="">
+                <p class="text-sm text-white text-right">Wind Speed</p>
+              </div>
+              <div class="">
+                <p
+                  id="windSpeed"
+                  class="font-bold text-sm text-right text-[#ff5a00]"
+                >
+                  0 m/s
+                </p>
+              </div>
+            </div>
+            <!-- for humidity -->
+            <div
+              class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
+            >
+              <ion-icon class="w-8 h-8 text-white" name="rainy"></ion-icon>
+              <div class="">
+                <p class="text-sm text-white text-right">Humidity</p>
+              </div>
+              <div class="">
+                <p
+                  id="humidity"
+                  class="font-bold text-sm text-right text-[#ff5a00]"
+                >
+                  89 %
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- current weather details ends here -->
+        <!-- --6 days forecast-- -->
+        <div
+          id="extraData"
+          class="col-span-4 rounded-b-lg place-content-center xl:rounded-r-lg shadow-2xl cursor-pointer bg-[#1f2937] backdrop-blur-sm"
+        >
+          <h1 class="text-[#a8b9d7] font-sans p-5 font-bold">
+            6 Days Forecast
+          </h1>
+          <div
+            id="forecastCards"
+            class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 grid-cols-1 max-w-[90%] m-auto"
+          ></div>
+          <div class="p-3"></div>
+        </div>
+      </div>
+    </main>
     <script src="script.js"></script>
   </body>
 </html>
