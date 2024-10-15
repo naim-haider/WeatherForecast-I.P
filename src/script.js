@@ -1,9 +1,27 @@
-// ---search details--- //
+// ===Mobile mene toggle button functionality starts here=== //
+const mobileMenu = document.getElementById("mobile-menu");
+const menuIcon = document.getElementById("menuIcon");
+const menuCloseIcon = document.getElementById("menuCloseIcon");
+
+function menuToggle(e) {
+  e.name === "menu"
+    ? ((e.name = "close"),
+      mobileMenu.classList.remove("hidden"),
+      mobileMenu.classList.add("block"))
+    : ((e.name = "menu"),
+      mobileMenu.classList.add("hidden"),
+      mobileMenu.classList.remove("block"));
+}
+// ===Mobile mene toggle button functionality ends here=== //
+
+// ---search details starts here--- //
 const searchBtn = document.querySelectorAll(".searchBtn");
 const currentBtn = document.querySelectorAll(".currentBtn");
 const citySearched = document.querySelectorAll(".inputField");
+// ---search details ends here--- //
 
-// ---main card details--- //
+// ---main card details starts here--- //
+const mainDate = document.getElementById("date");
 const weatherIcon = document.getElementById("currMainIcon");
 const current_weather = document.getElementById("weather");
 const current_temperature = document.getElementById("cur_temperature");
@@ -13,27 +31,39 @@ const temperature = document.getElementById("temperature");
 const windSpeed = document.getElementById("windSpeed");
 const humidity = document.getElementById("humidity");
 const visibility = document.getElementById("visibility");
-// const apiKey = "df77161e8b524dcea26181828240510";
 const apiKey = "afdce8e959ccad2851497a17c1796730";
+// ---main card details ends here--- //
 
 // ----6 days forecast details---- //
 const forecastCards = document.getElementById("forecastCards");
-const forecastDays = document.getElementById("forecastDays");
-const forecastDate = document.getElementById("forecastDate");
-const forecastIcon = document.getElementById("forecastIcon");
-const forecastTemperature = document.getElementById("forecastTemperature");
-const forecastWeather = document.getElementById("forecastWeather");
-const forecastMaxTemp = document.getElementById("forecastMaxTemp");
-const forecastMinTemp = document.getElementById("forecastMinTemp");
-const forecastWind = document.getElementById("forecastWind");
-const forecastHumidity = document.getElementById("forecastHumidity");
-const forecastVisibility = document.getElementById("forecastVisibility");
 
-async function fetchWeather(name, lat, lon, state) {
-  // const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`;
-  // const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
-  // const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+// ===Fetching weather data through openweather api starts here=== //
+async function fetchWeather(name) {
+  // ===Fetching current weather starts here=== //
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${name}&units=metric&appid=${apiKey}`;
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   try {
     const response = await fetch(apiUrl);
     console.log(response);
@@ -43,20 +73,30 @@ async function fetchWeather(name, lat, lon, state) {
     const data = await response.json();
     console.log("weatherData = ", data);
 
+    const date = new Date();
+    const fullDate = `${date.getDate()}, ${
+      months[date.getMonth()]
+    } ${date.getFullYear()}`;
+    console.log(fullDate);
+
+    mainDate.innerHTML = fullDate;
     weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     current_weather.innerHTML = data.weather[0].main;
-    current_temperature.innerHTML = (data.main.temp - 273.15).toFixed(0);
+    current_temperature.innerHTML = data.main.temp.toFixed(0);
     city.innerHTML = data.name;
     country.innerHTML = data.sys.country;
-    temperature.innerHTML = (data.main.temp - 273.15).toFixed(0);
+    temperature.innerHTML = data.main.temp.toFixed(0);
     windSpeed.innerHTML = data.wind.speed;
     humidity.innerHTML = data.main.humidity;
     visibility.innerHTML = data.visibility / 1000;
   } catch (error) {
     console.error("Error while fetching weather data: ", error);
   }
+  // ===Fetching current weather ends here=== //
 
-  const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  // ===Fetching forecast weather starts here=== //
+  const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${name}&units=metric&appid=${apiKey}`;
+
   try {
     const forecastResponse = await fetch(forecastApiUrl);
     console.log(forecastResponse);
@@ -76,8 +116,9 @@ async function fetchWeather(name, lat, lon, state) {
     forecastCards.innerHTML = "";
     for (let forecastDay of forcastDays) {
       let date = new Date(forecastDay.dt_txt);
-      console.log(date);
-      console.log(date.getMonth());
+      const fullDate = `${date.getDate()}, ${
+        months[date.getMonth()]
+      } ${date.getFullYear()}`;
 
       forecastCards.innerHTML += `
 <div>
@@ -86,11 +127,11 @@ async function fetchWeather(name, lat, lon, state) {
               >
                 <!-- forecast day -->
                 <div id="forecastDays" class="font-bold text-white text-xl">
-                  Thursday
+                  ${days[date.getDay()]}
                 </div>
                 <!-- forecast date -->
                 <div id="forecastDate" class="text-sm text-[#a8b9d7]">
-                  10 May 2020
+                 ${fullDate}
                 </div>
                 <!-- forecast icon -->
                 <div
@@ -110,9 +151,9 @@ async function fetchWeather(name, lat, lon, state) {
                     
                     class="font-medium text-6xl text-white"
                   >
-                    <span id="forecastTemperature">${(
-                      forecastDay.main.temp - 273.15
-                    ).toFixed(0)}</span>°
+                    <span id="forecastTemperature">${forecastDay.main.temp.toFixed(
+                      0
+                    )}</span>°
                   </div>
                   <div class="flex flex-col items-center ml-6">
                     <!-- forecast weather -->
@@ -127,7 +168,7 @@ async function fetchWeather(name, lat, lon, state) {
                       <span
                         id="forecastMaxTemp"
                         class="text-sm font-light text-[#a8b9d7]"
-                        ><span>${(forecastDay.main.temp_max - 273.15).toFixed(
+                        ><span>${forecastDay.main.temp_max.toFixed(
                           2
                         )}</span>°C</span
                       >
@@ -140,7 +181,7 @@ async function fetchWeather(name, lat, lon, state) {
                       <span
                         id="forecastMinTemp"
                         class="text-sm font-light text-[#a8b9d7]"
-                        ><span>${(forecastDay.main.temp_min - 273.15).toFixed(
+                        ><span>${forecastDay.main.temp_min.toFixed(
                           2
                         )}</span>°C</span
                       >
@@ -175,14 +216,42 @@ async function fetchWeather(name, lat, lon, state) {
   } catch (error) {
     console.error("Error while fetching weather data: ", error);
   }
+  // ===Fetching forecast weather ends here=== //
 }
+// ===Fetching weather data through openweather api ends here=== //
+
+// === current location button function starts here=== //
 async function fetchCurrentData(position) {
   const lat = position.coords.latitude;
   console.log(lat);
   const lon = position.coords.longitude;
   console.log(lon);
 
+  // ===Fetching current weather from current location starts here=== //
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
   try {
     const response = await fetch(apiUrl);
     console.log(response);
@@ -192,6 +261,13 @@ async function fetchCurrentData(position) {
     const data = await response.json();
     console.log("weatherData = ", data);
 
+    const date = new Date();
+    const fullDate = `${date.getDate()}, ${
+      months[date.getMonth()]
+    } ${date.getFullYear()}`;
+    console.log(fullDate);
+
+    mainDate.innerHTML = fullDate;
     weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     current_weather.innerHTML = data.weather[0].main;
     current_temperature.innerHTML = (data.main.temp - 273.15).toFixed(0);
@@ -204,9 +280,13 @@ async function fetchCurrentData(position) {
   } catch (error) {
     console.error("Error while fetching weather data: ", error);
   }
+  // ===Fetching current weather from current location ends here=== //
 
+  // ===Fetching forecast weather from current location starts here=== //
   const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   try {
+    const nextSixDays = forecastDays();
+
     const forecastResponse = await fetch(forecastApiUrl);
     console.log(forecastResponse);
     if (!forecastResponse.ok) {
@@ -225,8 +305,9 @@ async function fetchCurrentData(position) {
     forecastCards.innerHTML = "";
     for (let forecastDay of forcastDays) {
       let date = new Date(forecastDay.dt_txt);
-      console.log(date);
-      console.log(date.getMonth());
+      const fullDate = `${date.getDate()}, ${
+        months[date.getMonth()]
+      } ${date.getFullYear()}`;
 
       forecastCards.innerHTML += `
 <div>
@@ -235,11 +316,11 @@ async function fetchCurrentData(position) {
               >
                 <!-- forecast day -->
                 <div id="forecastDays" class="font-bold text-white text-xl">
-                  Thursday
+                ${days[date.getDay()]}
                 </div>
                 <!-- forecast date -->
                 <div id="forecastDate" class="text-sm text-[#a8b9d7]">
-                  10 May 2020
+                  ${fullDate}
                 </div>
                 <!-- forecast icon -->
                 <div
@@ -324,8 +405,11 @@ async function fetchCurrentData(position) {
   } catch (error) {
     console.error("Error while fetching weather data: ", error);
   }
+  // ===Fetching forecast weather from current location ends here=== //
 }
+// === current location button function ends here=== //
 
+// ===Search button functionality starts here=== //
 searchBtn.forEach((btn) => {
   btn.addEventListener("click", function () {
     citySearched.forEach((inp) => {
@@ -333,7 +417,6 @@ searchBtn.forEach((btn) => {
       if (city) {
         if (city) {
           const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
-          // fetchWeather(inp.value);
           fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
@@ -349,7 +432,9 @@ searchBtn.forEach((btn) => {
     });
   });
 });
+// ===Search button functionality ends here=== //
 
+// ===current location button functionality starts here=== //
 currentBtn.forEach((btn) => {
   btn.addEventListener("click", function () {
     if (navigator.geolocation) {
@@ -357,50 +442,27 @@ currentBtn.forEach((btn) => {
     } else {
       console.log("GeoLocation is not supported");
     }
-    // fetchCurrentData();
   });
 });
+// ===current location button functionality ends here=== //
 
-// const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=df77161e8b524dcea26181828240510&q=${citySearched}&days=7`;
-
-// searchBtn.forEach((btn) => {
-//   btn.addEventListener("click", function () {
-//     fetch(apiUrl)
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error("Network response was not ok");
-//         }
-//         return response.json();
-//       })
-//       .then((data) => {
-//         console.log(data);
-//       })
-//       .catch((error) => {
-//         console.error("There was a problem with the fetch operation:", error);
-//       });
-//   });
-// });
-
-// searchBtn.addEventListener
-
-// async function api() {
-//   const response = await fetch(
-//     "https://api.weatherapi.com/v1/forecast.json?key=df77161e8b524dcea26181828240510&q=kolkata&days=7"
-//   );
-//   const result = await response.json();
-//   console.log(result);
-// }
-
-const mobileMenu = document.getElementById("mobile-menu");
-const menuIcon = document.getElementById("menuIcon");
-const menuCloseIcon = document.getElementById("menuCloseIcon");
-
-function menuToggle(e) {
-  e.name === "menu"
-    ? ((e.name = "close"),
-      mobileMenu.classList.remove("hidden"),
-      mobileMenu.classList.add("block"))
-    : ((e.name = "menu"),
-      mobileMenu.classList.add("hidden"),
-      mobileMenu.classList.remove("block"));
+function forecastDays() {
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const today = new Date();
+  const sixForecastDays = [];
+  for (let i = 0; i < 6; i++) {
+    const nextDay = new Date();
+    nextDay.setDate(today.getDate() + i);
+    const dayOfWeek = daysOfWeek[nextDay.getDay()];
+    sixForecastDays.push(dayOfWeek);
+  }
+  return sixForecastDays;
 }
