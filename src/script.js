@@ -21,6 +21,7 @@ const citySearched = document.querySelectorAll(".inputField");
 // ---search details ends here--- //
 
 // ---main card details starts here--- //
+const background = document.getElementById("background");
 const mainDate = document.getElementById("date");
 const weatherIcon = document.getElementById("currMainIcon");
 const current_weather = document.getElementById("weather");
@@ -36,6 +37,58 @@ const apiKey = "afdce8e959ccad2851497a17c1796730";
 
 // ----6 days forecast details---- //
 const forecastCards = document.getElementById("forecastCards");
+
+// ===Dynamic background based on city weather starts here=== //
+let backgroundArr = new Array();
+backgroundArr[0] = "url('./images/clear.gif')";
+backgroundArr[1] = "url('./images/clouds.gif')";
+backgroundArr[2] = "url('./images/rain.gif')";
+backgroundArr[3] = "url('./images/snow.gif')";
+backgroundArr[4] = "url('./images/fog.gif')";
+backgroundArr[5] = "url('./images/night.gif')";
+backgroundArr[6] = "url('./images/thunderstorm.gif')";
+backgroundArr[7] = "url('./images/haze.gif')";
+backgroundArr[8] = "url('./images/mist.gif')";
+
+function setWeatherBackground(weather) {
+  let weatherIndex;
+  switch (weather.toLowerCase()) {
+    case "clear":
+      weatherIndex = 0;
+      break;
+    case "clouds":
+      weatherIndex = 1;
+      break;
+    case "rain":
+      weatherIndex = 2;
+      break;
+    case "snow":
+      weatherIndex = 3;
+      break;
+    case "fog":
+      weatherIndex = 4;
+      break;
+    case "night":
+      weatherIndex = 5;
+      break;
+    case "thunderstorm":
+      weatherIndex = 6;
+      break;
+    case "haze":
+      weatherIndex = 7;
+      break;
+    case "mist":
+      weatherIndex = 8;
+      break;
+    default:
+      // ===Use a default background or handle unknown weather descriptions=== //
+      weatherIndex = 0;
+  }
+
+  // ===Setting the background image directly using style property=== //
+  background.style.backgroundImage = backgroundArr[weatherIndex];
+}
+// ===Dynamic background based on city weather starts here=== //
 
 // ===Fetching weather data through openweather api starts here=== //
 async function fetchWeather(name) {
@@ -72,6 +125,11 @@ async function fetchWeather(name) {
     }
     const data = await response.json();
     console.log("weatherData = ", data);
+    let weather = data.weather[0].main;
+    console.log(weather);
+
+    // ===calling the setweather function=== //
+    setWeatherBackground(weather);
 
     const date = new Date();
     const fullDate = `${date.getDate()}, ${
@@ -260,6 +318,11 @@ async function fetchCurrentData(position) {
     }
     const data = await response.json();
     console.log("weatherData = ", data);
+    let weather = data.weather[0].main;
+    console.log(weather);
+
+    // ===calling the setweather function=== //
+    setWeatherBackground(weather);
 
     const date = new Date();
     const fullDate = `${date.getDate()}, ${
