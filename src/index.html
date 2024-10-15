@@ -152,20 +152,20 @@
           <!-- weather -->
           <div class="flex flex-col gap-3">
             <p id="weather" class="font-semibold mb-5 text-3xl text-white">
-              Sunny
+              ______
             </p>
           </div>
           <!-- tempreture -->
           <div class="">
             <p class="font-semibold text-4xl text-white">
-              <span id="cur_temperature">24</span>°C
+              <span id="cur_temperature">___</span>°C
             </p>
-            <p class="font-semibold text-xl text-white">Now</p>
+            <p class="font-semibold mt-2 text-xl text-white">Now</p>
           </div>
           <!-- city and country name -->
           <div class="flex flex-col mt-6 mb-4">
             <p class="font-semibold text-2xl text-white">
-              <span id="city">Howrah</span>, <span id="country">IN</span>
+              <span id="city">City</span>, <span id="country">Country</span>
             </p>
           </div>
           <!-- current details -->
@@ -183,7 +183,7 @@
               </div>
               <div class="">
                 <p class="font-bold text-sm text-right text-[#ff5a00]">
-                  <span id="temperature">24</span>°C
+                  <span id="temperature">___</span>°C
                 </p>
               </div>
             </div>
@@ -199,11 +199,8 @@
                 <p class="text-sm text-white text-right">Wind Speed</p>
               </div>
               <div class="">
-                <p
-                  id="windSpeed"
-                  class="font-bold text-sm text-right text-[#ff5a00]"
-                >
-                  0 m/s
+                <p class="font-bold text-sm text-right text-[#ff5a00]">
+                  <span id="windSpeed">___</span>m/s
                 </p>
               </div>
             </div>
@@ -216,11 +213,25 @@
                 <p class="text-sm text-white text-right">Humidity</p>
               </div>
               <div class="">
-                <p
-                  id="humidity"
-                  class="font-bold text-sm text-right text-[#ff5a00]"
-                >
-                  89 %
+                <p class="font-bold text-sm text-right text-[#ff5a00]">
+                  <span id="humidity">___</span>%
+                </p>
+              </div>
+            </div>
+            <!-- for visibility -->
+            <div
+              class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
+            >
+              <ion-icon
+                class="w-8 h-8 text-white"
+                name="eye-outline"
+              ></ion-icon>
+              <div class="">
+                <p class="text-sm text-white text-right">Visibility</p>
+              </div>
+              <div class="">
+                <p class="font-bold text-sm text-right text-[#ff5a00]">
+                  <span id="visibility">___</span>km
                 </p>
               </div>
             </div>
@@ -232,7 +243,7 @@
           id="extraData"
           class="col-span-4 rounded-b-lg place-content-center xl:rounded-r-lg shadow-2xl cursor-pointer bg-[#1f2937] backdrop-blur-sm"
         >
-          <h1 class="text-[#a8b9d7] font-sans p-5 font-bold">
+          <h1 class="text-[#a8b9d7] text-center font-sans p-5 font-bold">
             6 Days Forecast
           </h1>
           <div
