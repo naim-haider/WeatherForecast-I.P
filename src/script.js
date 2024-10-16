@@ -14,6 +14,32 @@ function menuToggle(e) {
 }
 // ===Mobile mene toggle button functionality ends here=== //
 
+// ===setting localStorage=== //
+let searchedCity = localStorage.getItem("searchedCity")
+  ? JSON.parse(localStorage.getItem("searchedCity"))
+  : [];
+
+// ===Dropdown menu functionality starts here=== //
+const inputmenu = document.querySelectorAll(".input");
+const dropmenu = document.querySelectorAll(".dropmenu");
+const dropDownMenu = document.querySelectorAll(".dropDownMenu");
+const background = document.getElementById("background");
+inputmenu.forEach((inp) => {
+  inp.addEventListener("click", () => {
+    dropmenu.forEach((dropm) => {
+      dropm.classList.remove("hidden");
+      dropm.classList.add("block");
+    });
+  });
+  background.addEventListener("click", () => {
+    dropmenu.forEach((dropm) => {
+      dropm.classList.add("hidden");
+      dropm.classList.remove("block");
+    });
+  });
+});
+// ===Dropdown menu functionality ends here=== //
+
 // ---search details starts here--- //
 const searchBtn = document.querySelectorAll(".searchBtn");
 const currentBtn = document.querySelectorAll(".currentBtn");
@@ -21,7 +47,6 @@ const citySearched = document.querySelectorAll(".inputField");
 // ---search details ends here--- //
 
 // ---main card details starts here--- //
-const background = document.getElementById("background");
 const mainDate = document.getElementById("date");
 const weatherIcon = document.getElementById("currMainIcon");
 const current_weather = document.getElementById("weather");
@@ -37,6 +62,7 @@ const apiKey = "afdce8e959ccad2851497a17c1796730";
 
 // ----6 days forecast details---- //
 const forecastCards = document.getElementById("forecastCards");
+const loading = document.getElementById("loading");
 
 // ===Dynamic background based on city weather starts here=== //
 let backgroundArr = new Array();
@@ -117,13 +143,19 @@ async function fetchWeather(name) {
     "Nov",
     "Dec",
   ];
+  if (!searchedCity.includes(name)) {
+    searchedCity.push(name);
+    localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
+  }
   try {
     const response = await fetch(apiUrl);
+
     console.log(response);
     if (!response.ok) {
       throw new Error("City not Found");
     }
     const data = await response.json();
+    loading.textContent = "6 Days Forecast";
     console.log("weatherData = ", data);
     let weather = data.weather[0].main;
     console.log(weather);
@@ -312,12 +344,18 @@ async function fetchCurrentData(position) {
   ];
   try {
     const response = await fetch(apiUrl);
+    loading.textContent = "6 Days Forecast";
     console.log(response);
     if (!response.ok) {
       throw new Error("City not Found");
     }
     const data = await response.json();
     console.log("weatherData = ", data);
+    if (!searchedCity.includes(data.name)) {
+      searchedCity.push(data.name);
+      localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
+    }
+
     let weather = data.weather[0].main;
     console.log(weather);
 
@@ -468,6 +506,8 @@ async function fetchCurrentData(position) {
   } catch (error) {
     console.error("Error while fetching weather data: ", error);
   }
+
+  getDropdownMenu();
   // ===Fetching forecast weather from current location ends here=== //
 }
 // === current location button function ends here=== //
@@ -475,6 +515,7 @@ async function fetchCurrentData(position) {
 // ===Search button functionality starts here=== //
 searchBtn.forEach((btn) => {
   btn.addEventListener("click", function () {
+    loading.textContent = "Loading....!!";
     citySearched.forEach((inp) => {
       const city = inp.value;
       if (city) {
@@ -487,7 +528,10 @@ searchBtn.forEach((btn) => {
 
               let { name, lat, lon, country, state } = data[0];
               fetchWeather(name, lat, lon, country, state);
+              inp.value = "";
             });
+
+          getDropdownMenu();
         } else {
           console.log("Please enter a city name");
         }
@@ -497,9 +541,16 @@ searchBtn.forEach((btn) => {
 });
 // ===Search button functionality ends here=== //
 
+// function getCityInp(city) {
+//   citySearched.forEach((inp) => {
+//     inp.value = city;
+//   });
+// }
+
 // ===current location button functionality starts here=== //
 currentBtn.forEach((btn) => {
   btn.addEventListener("click", function () {
+    loading.textContent = "Loading....!!";
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(fetchCurrentData);
     } else {
@@ -529,3 +580,30 @@ function forecastDays() {
   }
   return sixForecastDays;
 }
+
+function deleteCity(i) {
+  if (confirm("Are you sure you want to delete the City :(")) {
+    searchedCity.splice(i, 1);
+    localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
+    getDropdownMenu();
+  }
+}
+
+function getDropdownMenu() {
+  document.querySelectorAll(".dropdownItem").forEach((data) => data.remove());
+  searchedCity.forEach((element, index) => [
+    dropDownMenu.forEach((dropdwn) => {
+      dropdwn.innerHTML += `
+ <a
+      href="#"
+      class="dropdownItem block px-4 py-2 text-sm text-gray-900"
+      role="menuitem"
+      tabindex="-1"
+      id="menu-item-0"
+    
+      >${element}<span class= 'right-5 absolute' onclick="deleteCity(${index})">☓</span></a>
+ `;
+    }),
+  ]);
+}
+getDropdownMenu();

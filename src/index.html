@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./output.css" />
+    <link rel="icon" type="image/x-icon" href="./images/cloud-rain-icons.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -19,7 +20,7 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
-    <title>Mausam_Ka_Haal</title>
+    <title>Weatherry-Weather_Forecast</title>
   </head>
   <body>
     <header>
@@ -41,12 +42,27 @@
               </div>
               <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
-                  <input
-                    href="#"
-                    class="inputField rounded-md bg-gray-900 px-3 py-2 mt-1 text-sm font-medium text-white"
-                    aria-current="page"
-                    placeholder="Enter your location"
-                  />
+                  <!-- Dropdown menu for pc starts here -->
+
+                  <div class="relative inline-block text-left">
+                    <input
+                      href="#"
+                      class="input inputField rounded-md bg-gray-900 px-3 py-2 mt-1 text-sm font-medium text-white"
+                      aria-current="page"
+                      placeholder="Enter your location"
+                      aria-expanded="true"
+                    />
+                    <div
+                      class="absolute dropmenu hidden -right-3 z-10 mt-2 w-56 origin-top-right rounded-md bg-white/40 backdrop-blur-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="menu-button"
+                      tabindex="-1"
+                    >
+                      <div id="" class="py-1 dropDownMenu" role="none"></div>
+                    </div>
+                  </div>
+                  <!-- Dropdown menu for pc ends here -->
                   <button
                     class="searchBtn rounded-md border-solid border-2 border-gray-700 px-3 py-2 mt-1 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
@@ -83,13 +99,25 @@
         <!-- Mobile menu, show/hide based on menu state. -->
         <div class="md:hidden hidden" id="mobile-menu">
           <div class="space-y-1 px-2 pb-3 pt-2">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <input
-              href="#"
-              class="inputField inline-block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-              aria-current="page"
-              placeholder="Enter your location"
-            />
+            <!-- ===Dropdown menu for mobile starts here=== -->
+            <div class="relative inline-block text-left">
+              <input
+                href="#"
+                class="input inputField inline-block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
+                aria-current="page"
+                placeholder="Enter your location"
+              />
+              <div
+                class="absolute dropmenu hidden -right-2 z-10 mt-2 w-56 origin-top-right rounded-md bg-white/40 backdrop-blur-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabindex="-1"
+              >
+                <div class="py-1 dropDownMenu" role="none"></div>
+              </div>
+            </div>
+            <!-- Dropdown menu for mobile ends here -->
 
             <button
               href="#"
@@ -116,7 +144,7 @@
 
     <main
       id="background"
-      class="bg-[url('./images/clear.gif')] bg-center bg-cover bg-no-repeat min-h-screen w-full flex flex-col gap-1 justify-start p-12"
+      class="main bg-[url('./images/clear.gif')] bg-center bg-cover bg-no-repeat min-h-screen w-full flex flex-col gap-1 justify-start p-12"
     >
       <!-- main card -->
       <div class="grid grid-cols-1 xl:grid-cols-6">
@@ -129,7 +157,7 @@
             class="block w-32 md:w-32 justify-around items-center bg-inherit p-1 gap-2"
           >
             <div
-              class="text-white pl-4 mb-2 text-justify text-sm h-5 w-40 font-serif font-bold rounded-lg p-1"
+              class="text-[#555f72] pl-4 mb-2 text-justify text-sm h-5 w-40 font-serif font-bold rounded-lg p-1"
               id="date"
             ></div>
           </div>
@@ -171,11 +199,11 @@
               class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
             >
               <ion-icon
-                class="w-8 h-8 text-white"
+                class="w-8 h-8 text-[#7d8ca7]"
                 name="thermometer"
               ></ion-icon>
               <div class="">
-                <p class="text-sm text-white text-right">Temperature</p>
+                <p class="text-sm text-[#555f72] text-right">Temperature</p>
               </div>
               <div class="">
                 <p class="font-bold text-sm text-right text-[#ff5a00]">
@@ -188,11 +216,11 @@
               class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
             >
               <ion-icon
-                class="w-8 h-8 text-white"
+                class="w-8 h-8 text-[#7d8ca7]"
                 name="speedometer"
               ></ion-icon>
               <div class="">
-                <p class="text-sm text-white text-right">Wind Speed</p>
+                <p class="text-sm text-[#555f72] text-right">Wind Speed</p>
               </div>
               <div class="">
                 <p class="font-bold text-sm text-right text-[#ff5a00]">
@@ -204,9 +232,9 @@
             <div
               class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
             >
-              <ion-icon class="w-8 h-8 text-white" name="rainy"></ion-icon>
+              <ion-icon class="w-8 h-8 text-[#7d8ca7]" name="rainy"></ion-icon>
               <div class="">
-                <p class="text-sm text-white text-right">Humidity</p>
+                <p class="text-sm text-[#555f72] text-right">Humidity</p>
               </div>
               <div class="">
                 <p class="font-bold text-sm text-right text-[#ff5a00]">
@@ -219,11 +247,11 @@
               class="flex w-full justify-around items-center bg-white/30 rounded-lg p-1 gap-6"
             >
               <ion-icon
-                class="w-8 h-8 text-white"
+                class="w-8 h-8 text-[#7d8ca7]"
                 name="eye-outline"
               ></ion-icon>
               <div class="">
-                <p class="text-sm text-white text-right">Visibility</p>
+                <p class="text-sm text-[#555f72] text-right">Visibility</p>
               </div>
               <div class="">
                 <p class="font-bold text-sm text-right text-[#ff5a00]">
@@ -239,7 +267,10 @@
           id="extraData"
           class="col-span-4 rounded-b-lg place-content-center xl:rounded-r-lg shadow-2xl cursor-pointer bg-[#1f2937] backdrop-blur-sm"
         >
-          <h1 class="text-[#a8b9d7] text-center font-sans p-5 font-bold">
+          <h1
+            id="loading"
+            class="text-[#a8b9d7] text-center font-sans p-5 font-bold"
+          >
             6 Days Forecast
           </h1>
           <div
