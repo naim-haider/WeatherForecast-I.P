@@ -19,25 +19,31 @@ let searchedCity = localStorage.getItem("searchedCity")
   ? JSON.parse(localStorage.getItem("searchedCity"))
   : [];
 
+console.log(searchedCity.length);
+
 // ===Dropdown menu functionality starts here=== //
 const inputmenu = document.querySelectorAll(".input");
 const dropmenu = document.querySelectorAll(".dropmenu");
 const dropDownMenu = document.querySelectorAll(".dropDownMenu");
 const background = document.getElementById("background");
-inputmenu.forEach((inp) => {
-  inp.addEventListener("click", () => {
-    dropmenu.forEach((dropm) => {
-      dropm.classList.remove("hidden");
-      dropm.classList.add("block");
+
+// ---conditional dropdown menu display--- //
+if (searchedCity.length > 0) {
+  inputmenu.forEach((inp) => {
+    inp.addEventListener("click", () => {
+      dropmenu.forEach((dropm) => {
+        dropm.classList.remove("hidden");
+        dropm.classList.add("block");
+      });
+    });
+    background.addEventListener("click", () => {
+      dropmenu.forEach((dropm) => {
+        dropm.classList.add("hidden");
+        dropm.classList.remove("block");
+      });
     });
   });
-  background.addEventListener("click", () => {
-    dropmenu.forEach((dropm) => {
-      dropm.classList.add("hidden");
-      dropm.classList.remove("block");
-    });
-  });
-});
+}
 // ===Dropdown menu functionality ends here=== //
 
 // ---search details starts here--- //
@@ -535,17 +541,14 @@ searchBtn.forEach((btn) => {
         } else {
           console.log("Please enter a city name");
         }
+      } else {
+        loading.textContent = "Please enter a city name :(";
+        console.log("Please enter a city name");
       }
     });
   });
 });
 // ===Search button functionality ends here=== //
-
-// function getCityInp(city) {
-//   citySearched.forEach((inp) => {
-//     inp.value = city;
-//   });
-// }
 
 // ===current location button functionality starts here=== //
 currentBtn.forEach((btn) => {
@@ -560,6 +563,7 @@ currentBtn.forEach((btn) => {
 });
 // ===current location button functionality ends here=== //
 
+// ===calculating forecast days=== //
 function forecastDays() {
   const daysOfWeek = [
     "Sunday",
@@ -581,6 +585,7 @@ function forecastDays() {
   return sixForecastDays;
 }
 
+// ===delete city from dropdown menu functionality === //
 function deleteCity(i) {
   if (confirm("Are you sure you want to delete the City :(")) {
     searchedCity.splice(i, 1);
@@ -589,21 +594,17 @@ function deleteCity(i) {
   }
 }
 
+// ===setting dropdown menu=== //
 function getDropdownMenu() {
   document.querySelectorAll(".dropdownItem").forEach((data) => data.remove());
-  searchedCity.forEach((element, index) => [
+  searchedCity.forEach((element, index) => {
     dropDownMenu.forEach((dropdwn) => {
       dropdwn.innerHTML += `
- <a
-      href="#"
-      class="dropdownItem block px-4 py-2 text-sm text-gray-900"
-      role="menuitem"
-      tabindex="-1"
-      id="menu-item-0"
-    
-      >${element}<span class= 'right-5 absolute' onclick="deleteCity(${index})">☓</span></a>
+ <div
+      class="dropdownItem cursor-pointer block px-4 py-2 text-sm text-gray-900"
+      >${element}<span class= 'right-5 absolute ' onclick="deleteCity(${index})">☓</span></div>
  `;
-    }),
-  ]);
+    });
+  });
 }
 getDropdownMenu();
