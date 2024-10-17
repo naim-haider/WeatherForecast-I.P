@@ -36,6 +36,10 @@ Features
 
 - https://github.com/naim-haider/WeatherForecast-I.P.git
 
+## Screenshots
+
+- [Weather Dashboard](./src/images/SS-of-website.jpeg)
+
 ## Usage
 
 - Enter a city name in the search field and click "Search" to get the weather data.
