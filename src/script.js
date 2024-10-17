@@ -100,9 +100,6 @@ function setWeatherBackground(weather) {
     case "fog":
       weatherIndex = 4;
       break;
-    case "night":
-      weatherIndex = 5;
-      break;
     case "thunderstorm":
       weatherIndex = 6;
       break;
@@ -121,6 +118,17 @@ function setWeatherBackground(weather) {
   background.style.backgroundImage = backgroundArr[weatherIndex];
 }
 // ===Dynamic background based on city weather ends here=== //
+
+// ===Dynamic default background based on day and night timing starts here=== //
+const bgDate = new Date();
+const bgTime = bgDate.getHours();
+// console.log(bgTime);
+if (bgTime >= 18 || bgTime < 6) {
+  background.style.backgroundImage = "url('./images/night.gif')";
+} else {
+  background.style.backgroundImage = "url('./images/clear.gif')";
+}
+// ===Dynamic default background based on day and night timing ends here=== //
 
 // ===Fetching weather data through openweather api starts here=== //
 async function fetchWeather(name) {
