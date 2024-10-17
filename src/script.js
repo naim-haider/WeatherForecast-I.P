@@ -149,10 +149,11 @@ async function fetchWeather(name) {
     "Nov",
     "Dec",
   ];
-  if (!searchedCity.includes(name)) {
-    searchedCity.push(name);
+  if (!searchedCity.includes(name.toLowerCase())) {
+    searchedCity.push(name.toLowerCase());
     localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
   }
+  getDropdownMenu();
   try {
     const response = await fetch(apiUrl);
 
@@ -357,8 +358,8 @@ async function fetchCurrentData(position) {
     }
     const data = await response.json();
     console.log("weatherData = ", data);
-    if (!searchedCity.includes(data.name)) {
-      searchedCity.push(data.name);
+    if (!searchedCity.includes(data.name.toLowerCase())) {
+      searchedCity.push(data.name.toLowerCase());
       localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
     }
 
@@ -523,27 +524,25 @@ searchBtn.forEach((btn) => {
   btn.addEventListener("click", function () {
     loading.textContent = "Loading....!!";
     citySearched.forEach((inp) => {
-      const city = inp.value;
+      const city = inp.value.toLowerCase();
       if (city) {
-        if (city) {
-          const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
-          fetch(apiUrl)
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
+        const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
 
-              let { name, lat, lon, country, state } = data[0];
-              fetchWeather(name, lat, lon, country, state);
-              inp.value = "";
-            });
+            let { name, lat, lon, country, state } = data[0];
+            fetchWeather(name, lat, lon, country, state);
+            inp.value = "";
+          });
 
-          getDropdownMenu();
-        } else {
-          console.log("Please enter a city name");
-        }
+        getDropdownMenu();
       } else {
-        loading.textContent = "Please enter a city name :(";
+        // loading.textContent = "Please enter a city name :(";
         console.log("Please enter a city name");
+        alert("Please enter a city name");
+        loading.textContent = "6 Days Forecast";
       }
     });
   });
@@ -594,15 +593,28 @@ function deleteCity(i) {
   }
 }
 
+function setSearchInp(element) {
+  citySearched.forEach((cs) => {
+    cs.value = element;
+  });
+}
+
 // ===setting dropdown menu=== //
 function getDropdownMenu() {
   document.querySelectorAll(".dropdownItem").forEach((data) => data.remove());
   searchedCity.forEach((element, index) => {
+    console.log(element);
+
     dropDownMenu.forEach((dropdwn) => {
       dropdwn.innerHTML += `
- <div
-      class="dropdownItem cursor-pointer block px-4 py-2 text-sm text-gray-900"
-      >${element}<span class= 'right-5 absolute ' onclick="deleteCity(${index})">☓</span></div>
+ <div class="dropdownItem">
+      <span class=" cursor-pointer block px-4 py-2 text-sm text-gray-900"  onclick="setSearchInp('${element}')">
+      ${element}
+      </span>
+      <span class= 'right-5 -mt-7 absolute cursor-pointer' onclick="deleteCity(${index})">
+      ☓
+      </span>
+  </div>
  `;
     });
   });

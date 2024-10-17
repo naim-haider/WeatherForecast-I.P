@@ -612,6 +612,10 @@ video {
   margin-right: auto;
 }
 
+.-mt-7 {
+  margin-top: -1.75rem;
+}
+
 .-mt-9 {
   margin-top: -2.25rem;
 }
