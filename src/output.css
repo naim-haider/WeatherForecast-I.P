@@ -1059,11 +1059,6 @@ video {
   font-weight: 100;
 }
 
-.text-\[\#555f72\] {
-  --tw-text-opacity: 1;
-  color: rgb(85 95 114 / var(--tw-text-opacity));
-}
-
 .text-\[\#7d8ca7\] {
   --tw-text-opacity: 1;
   color: rgb(125 140 167 / var(--tw-text-opacity));

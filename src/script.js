@@ -19,7 +19,7 @@ let searchedCity = localStorage.getItem("searchedCity")
   ? JSON.parse(localStorage.getItem("searchedCity"))
   : [];
 
-console.log(searchedCity.length);
+// console.log(searchedCity.length);
 
 // ===Dropdown menu functionality starts here=== //
 const inputmenu = document.querySelectorAll(".input");
@@ -120,7 +120,7 @@ function setWeatherBackground(weather) {
   // ===Setting the background image directly using style property=== //
   background.style.backgroundImage = backgroundArr[weatherIndex];
 }
-// ===Dynamic background based on city weather starts here=== //
+// ===Dynamic background based on city weather ends here=== //
 
 // ===Fetching weather data through openweather api starts here=== //
 async function fetchWeather(name) {
@@ -157,15 +157,15 @@ async function fetchWeather(name) {
   try {
     const response = await fetch(apiUrl);
 
-    console.log(response);
+    // console.log(response);
     if (!response.ok) {
       throw new Error("City not Found");
     }
     const data = await response.json();
     loading.textContent = "6 Days Forecast";
-    console.log("weatherData = ", data);
+    // console.log("weatherData = ", data);
     let weather = data.weather[0].main;
-    console.log(weather);
+    // console.log(weather);
 
     // ===calling the setweather function=== //
     setWeatherBackground(weather);
@@ -174,8 +174,9 @@ async function fetchWeather(name) {
     const fullDate = `${date.getDate()}, ${
       months[date.getMonth()]
     } ${date.getFullYear()}`;
-    console.log(fullDate);
+    // console.log(fullDate);
 
+    // ===displaying current data=== //
     mainDate.innerHTML = fullDate;
     weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
     current_weather.innerHTML = data.weather[0].main;
@@ -196,12 +197,12 @@ async function fetchWeather(name) {
 
   try {
     const forecastResponse = await fetch(forecastApiUrl);
-    console.log(forecastResponse);
+    // console.log(forecastResponse);
     if (!forecastResponse.ok) {
       throw new Error("City not Found");
     }
     const forecastData = await forecastResponse.json();
-    console.log("forecastData = ", forecastData);
+    // console.log("forecastData = ", forecastData);
     let sixDaysForecast = [];
     let forcastDays = forecastData.list.filter((forecastday) => {
       let forecastDate = new Date(forecastday.dt_txt).getDate();
@@ -209,7 +210,7 @@ async function fetchWeather(name) {
         return sixDaysForecast.push(forecastDate);
       }
     });
-    console.log(forcastDays);
+    // console.log(forcastDays);
     forecastCards.innerHTML = "";
     for (let forecastDay of forcastDays) {
       let date = new Date(forecastDay.dt_txt);
@@ -320,9 +321,9 @@ async function fetchWeather(name) {
 // === current location button function starts here=== //
 async function fetchCurrentData(position) {
   const lat = position.coords.latitude;
-  console.log(lat);
+  // console.log(lat);
   const lon = position.coords.longitude;
-  console.log(lon);
+  // console.log(lon);
 
   // ===Fetching current weather from current location starts here=== //
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
@@ -352,19 +353,19 @@ async function fetchCurrentData(position) {
   try {
     const response = await fetch(apiUrl);
     loading.textContent = "6 Days Forecast";
-    console.log(response);
+    // console.log(response);
     if (!response.ok) {
       throw new Error("City not Found");
     }
     const data = await response.json();
-    console.log("weatherData = ", data);
+    // console.log("weatherData = ", data);
     if (!searchedCity.includes(data.name.toLowerCase())) {
       searchedCity.push(data.name.toLowerCase());
       localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
     }
 
     let weather = data.weather[0].main;
-    console.log(weather);
+    // console.log(weather);
 
     // ===calling the setweather function=== //
     setWeatherBackground(weather);
@@ -373,7 +374,7 @@ async function fetchCurrentData(position) {
     const fullDate = `${date.getDate()}, ${
       months[date.getMonth()]
     } ${date.getFullYear()}`;
-    console.log(fullDate);
+    // console.log(fullDate);
 
     mainDate.innerHTML = fullDate;
     weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
@@ -385,6 +386,7 @@ async function fetchCurrentData(position) {
     windSpeed.innerHTML = data.wind.speed;
     humidity.innerHTML = data.main.humidity;
     visibility.innerHTML = data.visibility / 1000;
+    getDropdownMenu();
   } catch (error) {
     console.error("Error while fetching weather data: ", error);
   }
@@ -393,15 +395,15 @@ async function fetchCurrentData(position) {
   // ===Fetching forecast weather from current location starts here=== //
   const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   try {
-    const nextSixDays = forecastDays();
+    // const nextSixDays = forecastDays();
 
     const forecastResponse = await fetch(forecastApiUrl);
-    console.log(forecastResponse);
+    // console.log(forecastResponse);
     if (!forecastResponse.ok) {
       throw new Error("City not Found");
     }
     const forecastData = await forecastResponse.json();
-    console.log("forecastData = ", forecastData);
+    // console.log("forecastData = ", forecastData);
     let sixDaysForecast = [];
     let forcastDays = forecastData.list.filter((forecastday) => {
       let forecastDate = new Date(forecastday.dt_txt).getDate();
@@ -409,7 +411,7 @@ async function fetchCurrentData(position) {
         return sixDaysForecast.push(forecastDate);
       }
     });
-    console.log(forcastDays);
+    // console.log(forcastDays);
     forecastCards.innerHTML = "";
     for (let forecastDay of forcastDays) {
       let date = new Date(forecastDay.dt_txt);
@@ -530,19 +532,20 @@ searchBtn.forEach((btn) => {
         fetch(apiUrl)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            // console.log(data);
 
             let { name, lat, lon, country, state } = data[0];
             fetchWeather(name, lat, lon, country, state);
             inp.value = "";
           });
+        dropmenu.forEach((dropm) => {
+          dropm.classList.add("hidden");
+          dropm.classList.remove("block");
+        });
 
         getDropdownMenu();
       } else {
-        // loading.textContent = "Please enter a city name :(";
         console.log("Please enter a city name");
-        alert("Please enter a city name");
-        loading.textContent = "6 Days Forecast";
       }
     });
   });
@@ -555,6 +558,7 @@ currentBtn.forEach((btn) => {
     loading.textContent = "Loading....!!";
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(fetchCurrentData);
+      getDropdownMenu();
     } else {
       console.log("GeoLocation is not supported");
     }
@@ -603,7 +607,7 @@ function setSearchInp(element) {
 function getDropdownMenu() {
   document.querySelectorAll(".dropdownItem").forEach((data) => data.remove());
   searchedCity.forEach((element, index) => {
-    console.log(element);
+    // console.log(element);
 
     dropDownMenu.forEach((dropdwn) => {
       dropdwn.innerHTML += `
