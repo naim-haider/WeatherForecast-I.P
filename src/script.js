@@ -395,8 +395,6 @@ async function fetchCurrentData(position) {
   // ===Fetching forecast weather from current location starts here=== //
   const forecastApiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   try {
-    // const nextSixDays = forecastDays();
-
     const forecastResponse = await fetch(forecastApiUrl);
     // console.log(forecastResponse);
     if (!forecastResponse.ok) {
@@ -528,24 +526,28 @@ searchBtn.forEach((btn) => {
     citySearched.forEach((inp) => {
       const city = inp.value.toLowerCase();
       if (city) {
-        const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
-        fetch(apiUrl)
-          .then((response) => response.json())
-          .then((data) => {
-            // console.log(data);
+        if (city) {
+          const apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`;
+          fetch(apiUrl)
+            .then((response) => response.json())
+            .then((data) => {
+              // console.log(data);
 
-            let { name, lat, lon, country, state } = data[0];
-            fetchWeather(name, lat, lon, country, state);
-            inp.value = "";
+              let { name, lat, lon } = data[0];
+              fetchWeather(name, lat, lon);
+              inp.value = "";
+            });
+          dropmenu.forEach((dropm) => {
+            dropm.classList.add("hidden");
+            dropm.classList.remove("block");
           });
-        dropmenu.forEach((dropm) => {
-          dropm.classList.add("hidden");
-          dropm.classList.remove("block");
-        });
 
-        getDropdownMenu();
+          getDropdownMenu();
+        } else {
+          console.log("Please enter a valid city name");
+        }
       } else {
-        console.log("Please enter a city name");
+        console.log("Please enter a valid city name");
       }
     });
   });
@@ -597,9 +599,13 @@ function deleteCity(i) {
   }
 }
 
+// ===search functionality from dropdown menu=== //
 function setSearchInp(element) {
-  citySearched.forEach((cs) => {
-    cs.value = element;
+  loading.textContent = "Loading....!!";
+  fetchWeather(element);
+  dropmenu.forEach((dropm) => {
+    dropm.classList.add("hidden");
+    dropm.classList.remove("block");
   });
 }
 
