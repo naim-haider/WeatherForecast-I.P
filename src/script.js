@@ -14,16 +14,14 @@ function menuToggle(e) {
 }
 // ===Mobile mene toggle button functionality ends here=== //
 
-// ===setting localStorage=== //
+// ===getting data from localStorage if any=== //
 let searchedCity = localStorage.getItem("searchedCity")
   ? JSON.parse(localStorage.getItem("searchedCity"))
   : [];
 
-// console.log(searchedCity.length);
-
 // ===Dropdown menu functionality starts here=== //
 const inputmenu = document.querySelectorAll(".input");
-const dropmenu = document.querySelectorAll(".dropmenu");
+const dropmenu = document.querySelector(".dropmenu");
 const dropDownMenu = document.querySelectorAll(".dropDownMenu");
 const background = document.getElementById("background");
 
@@ -31,18 +29,17 @@ const background = document.getElementById("background");
 if (searchedCity.length > 0) {
   inputmenu.forEach((inp) => {
     inp.addEventListener("click", () => {
-      dropmenu.forEach((dropm) => {
-        dropm.classList.remove("hidden");
-        dropm.classList.add("block");
-      });
+      dropmenu.classList.add("block");
+      dropmenu.classList.remove("hidden");
     });
     background.addEventListener("click", () => {
-      dropmenu.forEach((dropm) => {
-        dropm.classList.add("hidden");
-        dropm.classList.remove("block");
-      });
+      dropmenu.classList.add("hidden");
+      dropmenu.classList.remove("block");
     });
   });
+} else {
+  dropmenu.classList.add("hidden");
+  dropmenu.classList.remove("block");
 }
 // ===Dropdown menu functionality ends here=== //
 
@@ -157,6 +154,7 @@ async function fetchWeather(name) {
     "Nov",
     "Dec",
   ];
+  // ==setting searched city to localStorage if it is no present already.==//
   if (!searchedCity.includes(name.toLowerCase())) {
     searchedCity.push(name.toLowerCase());
     localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
@@ -175,7 +173,7 @@ async function fetchWeather(name) {
     let weather = data.weather[0].main;
     // console.log(weather);
 
-    // ===calling the setweather function=== //
+    // ===calling the setweatherBackground function=== //
     setWeatherBackground(weather);
 
     const date = new Date();
@@ -227,7 +225,7 @@ async function fetchWeather(name) {
       } ${date.getFullYear()}`;
 
       forecastCards.innerHTML += `
-<div>
+          <div>
               <div
                 class="flex flex-col bg-white/20 backdrop-blur-sm rounded p-4 w-full"
               >
@@ -367,6 +365,8 @@ async function fetchCurrentData(position) {
     }
     const data = await response.json();
     // console.log("weatherData = ", data);
+
+    // ==setting searched city to localStorage if it is no present already.==//
     if (!searchedCity.includes(data.name.toLowerCase())) {
       searchedCity.push(data.name.toLowerCase());
       localStorage.setItem("searchedCity", JSON.stringify(searchedCity));
@@ -375,7 +375,7 @@ async function fetchCurrentData(position) {
     let weather = data.weather[0].main;
     // console.log(weather);
 
-    // ===calling the setweather function=== //
+    // ===calling the setweatherBackground function=== //
     setWeatherBackground(weather);
 
     const date = new Date();
@@ -539,16 +539,14 @@ searchBtn.forEach((btn) => {
           fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
-              // console.log(data);
+              console.log(data);
 
               let { name, lat, lon } = data[0];
               fetchWeather(name, lat, lon);
               inp.value = "";
             });
-          dropmenu.forEach((dropm) => {
-            dropm.classList.add("hidden");
-            dropm.classList.remove("block");
-          });
+          dropmenu.classList.add("hidden");
+          dropmenu.classList.remove("block");
 
           getDropdownMenu();
         } else {
@@ -577,26 +575,28 @@ currentBtn.forEach((btn) => {
 // ===current location button functionality ends here=== //
 
 // ===calculating forecast days=== //
-function forecastDays() {
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const today = new Date();
-  const sixForecastDays = [];
-  for (let i = 0; i < 6; i++) {
-    const nextDay = new Date();
-    nextDay.setDate(today.getDate() + i);
-    const dayOfWeek = daysOfWeek[nextDay.getDay()];
-    sixForecastDays.push(dayOfWeek);
-  }
-  return sixForecastDays;
-}
+// function forecastDays() {
+//   const daysOfWeek = [
+//     "Sunday",
+//     "Monday",
+//     "Tuesday",
+//     "Wednesday",
+//     "Thursday",
+//     "Friday",
+//     "Saturday",
+//   ];
+//   const today = new Date();
+//   const sixForecastDays = [];
+//   for (let i = 0; i < 6; i++) {
+//     const nextDay = new Date();
+//     nextDay.setDate(today.getDate() + i);
+//     const dayOfWeek = daysOfWeek[nextDay.getDay()];
+//     sixForecastDays.push(dayOfWeek);
+//   }
+//   return sixForecastDays;
+// }
+
+// console.log(forecastDays());
 
 // ===delete city from dropdown menu functionality === //
 function deleteCity(i) {
@@ -611,18 +611,14 @@ function deleteCity(i) {
 function setSearchInp(element) {
   loading.textContent = "Loading....!!";
   fetchWeather(element);
-  dropmenu.forEach((dropm) => {
-    dropm.classList.add("hidden");
-    dropm.classList.remove("block");
-  });
+  dropmenu.classList.add("hidden");
+  dropmenu.classList.remove("block");
 }
 
 // ===setting dropdown menu=== //
 function getDropdownMenu() {
   document.querySelectorAll(".dropdownItem").forEach((data) => data.remove());
   searchedCity.forEach((element, index) => {
-    // console.log(element);
-
     dropDownMenu.forEach((dropdwn) => {
       dropdwn.innerHTML += `
  <div class="dropdownItem">
